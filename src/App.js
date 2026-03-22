@@ -1,8 +1,8 @@
 import React from "react";
-import Loans from "./Loans";
+import Login from "./Login";
 
 function App() {
-  return <Loans />;
+  return <Login />;
 }
 
 export default App;
