@@ -1,8 +1,8 @@
 import React from "react";
-import Dashboard from "./Dashboard";
+import Loans from "./Loans";
 
 function App() {
-  return <Dashboard />;
+  return <Loans />;
 }
 
 export default App;
