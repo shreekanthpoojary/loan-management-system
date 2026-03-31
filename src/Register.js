@@ -63,7 +63,7 @@ const Register = () => {
             animationDuration: `${note.duration}s`,
           }}
         >
-          ₹
+          INR
         </div>
       ))}
 
@@ -83,7 +83,7 @@ const Register = () => {
             "--rot": `${coin.rot}deg`,
           }}
         >
-          ₹
+          INR
         </div>
       ))}
 
@@ -99,7 +99,6 @@ const Register = () => {
 
         <div style={styles.form}>
           <input type="text" placeholder="Full Name" style={styles.inputField} />
-          <input type="email" placeholder="Email Address" style={styles.inputField} />
           <input type="tel" placeholder="Phone Number" style={styles.inputField} />
           <input type="password" placeholder="Create Password" style={styles.inputField} />
           
@@ -146,8 +145,8 @@ const styles = {
   fallingNote: {
     position: "absolute",
     top: "-100px",
-    backgroundColor: "rgba(212, 175, 55, 0.15)",
-    border: "1px solid rgba(212, 175, 55, 0.4)",
+    backgroundColor: "rgba(212, 175, 55, 0.1)",
+    border: "1px solid rgba(212, 175, 55, 0.25)",
     color: "#d4af37",
     display: "flex",
     alignItems: "center",
@@ -168,11 +167,11 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "50%",
-    background: "linear-gradient(135deg, #f9e27d, #d4af37, #b8860b)",
+    background: "linear-gradient(135deg, #f0dc9d, #d4af37, #9a6b0f)",
     color: "#4a3b00",
     fontWeight: "bold",
-    boxShadow: "0 0 20px rgba(212, 175, 55, 0.6)",
-    border: "2px solid #8b6508",
+    boxShadow: "0 0 14px rgba(212, 175, 55, 0.35)",
+    border: "1px solid rgba(139, 101, 8, 0.9)",
     animation: "rupeeFly 1.2s forwards ease-out",
   },
   card: {

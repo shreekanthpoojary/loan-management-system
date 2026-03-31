@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 // Ensure your logo is in src/assets/logo.jpeg
 import logoFile from "./assets/logo.jpeg"; 
 
-const AuthSystem = () => {
+const AuthSystem = ({ goToAdmin } = {}) => {
   const [view, setView] = useState("login");
+  const [adminUserId, setAdminUserId] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
   const [coins, setCoins] = useState([]);
   const [notes, setNotes] = useState([]);
 
@@ -28,7 +30,7 @@ const AuthSystem = () => {
     }, 1000);
   }, []);
 
-  // --- 2. FALLING ₹200 NOTES ---
+  // --- 2. FALLING INR 200 NOTES ---
   useEffect(() => {
     const interval = setInterval(() => {
       const newNote = {
@@ -51,7 +53,7 @@ const AuthSystem = () => {
   return (
     <div style={styles.container}>
       
-      {/* LAYER 1: FALLING ₹200 NOTES */}
+      {/* LAYER 1: FALLING INR 200 NOTES */}
       {notes.map((note) => (
         <div
           key={note.id}
@@ -66,14 +68,29 @@ const AuthSystem = () => {
         >
           <div style={styles.noteContent}>
             <span style={styles.noteValue}>200</span>
-            <span style={styles.noteSymbol}>₹</span>
+            <span style={styles.noteSymbol}>INR</span>
           </div>
         </div>
       ))}
 
       {/* LAYER 2: LIGHT GOLD COIN SPRAY */}
       {coins.map((coin) => (
-        <div key={coin.id} style={{...styles.coin, left: coin.x, top: coin.y, fontSize: `${coin.size * 0.5}px`, width: `${coin.size}px`, height: `${coin.size}px`, "--tx": `${coin.tx}px`, "--ty": `${coin.ty}px`, "--rot": `${coin.rot}deg`}}>₹</div>
+        <div
+          key={coin.id}
+          style={{
+            ...styles.coin,
+            left: coin.x,
+            top: coin.y,
+            fontSize: `${coin.size * 0.5}px`,
+            width: `${coin.size}px`,
+            height: `${coin.size}px`,
+            "--tx": `${coin.tx}px`,
+            "--ty": `${coin.ty}px`,
+            "--rot": `${coin.rot}deg`,
+          }}
+        >
+          INR
+        </div>
       ))}
 
       <div style={styles.backgroundGlow}></div>
@@ -89,13 +106,69 @@ const AuthSystem = () => {
             <div style={styles.goldLine}></div>
             <p style={styles.tagline}>Instant Loans • Minimal Documents</p>
             <div style={styles.form}>
-              <input type="email" placeholder="Email Address" style={styles.inputField} />
+              <input type="tel" placeholder="Phone Number" style={styles.inputField} />
               <input type="password" placeholder="Password" style={styles.inputField} />
               <button style={styles.actionBtn}>LOGIN TO ACCOUNT</button>
             </div>
             <div style={styles.footer}>
               <span style={styles.subLink}>Forgot password?</span>
               <span style={styles.link} onClick={() => setView("register")}>Create Account</span>
+            </div>
+
+            <button
+              type="button"
+              style={styles.adminBtn}
+              onClick={() => {
+                setAdminUserId("");
+                setAdminPassword("");
+                setView("admin");
+              }}
+            >
+              ADMIN LOGIN
+            </button>
+          </>
+        ) : view === "admin" ? (
+          <>
+            <h1 style={styles.title}>ADMIN <span style={styles.goldHighlight}>LOGIN</span></h1>
+            <div style={styles.goldLine}></div>
+            <p style={styles.tagline}>Enter admin credentials</p>
+            <div style={styles.form}>
+              <input
+                type="tel"
+                placeholder="Admin Phone Number"
+                value={adminUserId}
+                onChange={(e) => setAdminUserId(e.target.value)}
+                style={styles.inputField}
+              />
+              <input
+                type="password"
+                placeholder="Admin Password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                style={styles.inputField}
+              />
+              <button
+                style={styles.actionBtn}
+                type="button"
+                onClick={() => {
+                  const validPhone = "9481215492";
+                  const validPassword = "admin";
+
+                  if (adminUserId.trim() === validPhone && adminPassword === validPassword) {
+                    alert("Admin login successful");
+                    if (goToAdmin) goToAdmin();
+                    return;
+                  }
+
+                  alert("Invalid admin phone number or password");
+                }}
+              >
+                LOGIN AS ADMIN
+              </button>
+            </div>
+
+            <div style={styles.footer}>
+              <span style={styles.link} onClick={() => setView("login")}>Back to User Login</span>
             </div>
           </>
         ) : (
@@ -105,7 +178,7 @@ const AuthSystem = () => {
             <p style={styles.tagline}>Start your journey with us</p>
             <div style={styles.form}>
               <input type="text" placeholder="Full Name" style={styles.inputField} />
-              <input type="email" placeholder="Email Address" style={styles.inputField} />
+              <input type="tel" placeholder="Phone Number" style={styles.inputField} />
               <input type="password" placeholder="Create Password" style={styles.inputField} />
               <button style={styles.actionBtn}>REGISTER NOW</button>
             </div>
@@ -149,7 +222,7 @@ const styles = {
   },
   rupeeNote: {
     position: "absolute", top: "-100px",
-    backgroundColor: "#ffb347", // ₹200 Note Base Orange/Yellow
+    backgroundColor: "#ffb347", // INR 200 Note Base Orange/Yellow
     background: "linear-gradient(90deg, #ffcc80, #ffb347, #ffa726)",
     border: "1px solid rgba(255,255,255,0.3)",
     zIndex: 1, borderRadius: "2px",
@@ -163,15 +236,15 @@ const styles = {
     border: "1px dashed rgba(0,0,0,0.1)", margin: "2px"
   },
   noteValue: { fontSize: "14px", fontWeight: "900", color: "rgba(0,0,0,0.6)", fontFamily: "serif" },
-  noteSymbol: { fontSize: "10px", color: "rgba(0,0,0,0.5)" },
+  noteSymbol: { fontSize: "10px", color: "rgba(0,0,0,0.5)", letterSpacing: "0.5px" },
 
   coin: {
     position: "fixed", pointerEvents: "none", zIndex: 9999, display: "flex", alignItems: "center",
     justifyContent: "center", borderRadius: "50%", background: "linear-gradient(135deg, #FFFDF5, #F9E27D)",
-    color: "#4A3B00", fontWeight: "bold", boxShadow: "0 0 15px rgba(249, 226, 125, 0.4)",
-    border: "1px solid #D4AF37", animation: "rupeeFly 1.2s forwards cubic-bezier(0.15, 0, 0.15, 1)",
+    color: "#4A3B00", fontWeight: "bold", boxShadow: "0 0 10px rgba(249, 226, 125, 0.25)",
+    border: "1px solid rgba(212, 175, 55, 0.65)", animation: "rupeeFly 1.2s forwards cubic-bezier(0.15, 0, 0.15, 1)",
   },
-  backgroundGlow: { position: "absolute", width: "100%", height: "100%", background: "radial-gradient(circle, rgba(249, 226, 125, 0.03) 0%, transparent 70%)", zIndex: 0 },
+  backgroundGlow: { position: "absolute", width: "100%", height: "100%", background: "radial-gradient(circle, rgba(249, 226, 125, 0.015) 0%, transparent 70%)", zIndex: 0 },
   card: {
     position: "relative", zIndex: 10, background: "rgba(10, 15, 13, 0.98)", padding: "50px 40px",
     borderRadius: "24px", width: "380px", textAlign: "center", border: "1px solid rgba(253, 226, 125, 0.15)",
@@ -189,6 +262,19 @@ const styles = {
     padding: "16px", background: "linear-gradient(135deg, #D4AF37, #F9E27D)", border: "none",
     borderRadius: "10px", fontWeight: "700", fontSize: "14px", color: "#000", cursor: "pointer",
     boxShadow: "0 10px 20px rgba(212, 175, 55, 0.2)", textTransform: "uppercase"
+  },
+  adminBtn: {
+    marginTop: "18px",
+    padding: "14px",
+    background: "rgba(249, 226, 125, 0.12)",
+    border: "1px solid rgba(249, 226, 125, 0.35)",
+    borderRadius: "10px",
+    fontWeight: "700",
+    fontSize: "14px",
+    color: "#F9E27D",
+    cursor: "pointer",
+    boxShadow: "0 10px 20px rgba(212, 175, 55, 0.1)",
+    textTransform: "uppercase"
   },
   footer: { marginTop: "35px", display: "flex", justifyContent: "space-between", color: "#666", fontSize: "12px", borderTop: "1px solid #1a1a1a", paddingTop: "20px" },
   link: { color: "#F9E27D", cursor: "pointer", fontWeight: "600" },
